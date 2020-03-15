@@ -1,0 +1,14 @@
+{
+  "name": "Screen Time",
+  "description": "Screen Time",
+  "version": "0.1.0",
+  "manifest_version": 2,
+  "browser_action": {
+    "default_title": "Screen Time Test",
+    "default_popup": "popup.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  }
+}
