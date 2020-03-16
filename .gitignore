@@ -18,3 +18,7 @@
 /src/.umi-production
 /src/.umi-test
 /.env.local
+
+# css temp files
+*.css
+*.css.map
