@@ -7,5 +7,11 @@
   },
   "extensionBrowserActionDefaultTitle": {
     "message": "屏幕使用时间"
+  },
+  "domainNotTracked": {
+    "message": "未统计"
+  },
+  "domainNotTrackedTooltip": {
+    "message": "当前网站尚未加入统计，您使用该网站的计时将被归入「其他」中"
   }
 }
