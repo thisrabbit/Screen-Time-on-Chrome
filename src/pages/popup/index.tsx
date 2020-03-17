@@ -1,32 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'antd';
 import styles from './index.less';
-import { isDev } from '@/utils/env';
+import { browser } from 'webextension-polyfill-ts';
+import { getDomainState, getUrlInfoInActiveTab } from '@/pages/background';
 
 export default () => {
-  if (isDev) {
-    const b = require('../background/index');
-    console.log(b.getDomainState(b.getUrlInfoInActiveTab()));
-  } else {
-    let activeDomain: string = '';
-    chrome.runtime.sendMessage(
-      {
-        id: 'getUrlInfoInActiveTab',
-      },
-      res => console.log(res),
-    );
-    chrome.runtime.sendMessage(
-      {
-        id: 'getDomainState',
-        domain: activeDomain,
-      },
-      res => console.log(res),
-    );
-  }
+  const [urlInfo, setUrlInfo] = useState();
+  const [domainState, setDomainState] = useState();
+
+  // @ts-ignore
+  useEffect(async () => {
+    setUrlInfo(await getUrlInfoInActiveTab());
+  }, []);
+  // @ts-ignore
+  useEffect(async () => {
+    setDomainState(await getDomainState(domainState));
+  }, []);
 
   return (
-    <div className={styles['main']}>
-      <Button>Test</Button>
+    <div className={styles['popup']}>
+      {urlInfo ? <p>{urlInfo.domain}</p> : <p>Loading...</p>}
     </div>
   );
 };
