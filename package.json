@@ -29,11 +29,11 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "umi": "^3.0.8",
-    "yorkie": "^2.0.0"
+    "yorkie": "^2.0.0",
+    "webextension-polyfill-ts": "^0.13.0"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.100",
-    "@types/node": "^13.9.1",
-    "webextension-polyfill-ts": "^0.13.0"
+    "@types/node": "^13.9.1"
   }
 }

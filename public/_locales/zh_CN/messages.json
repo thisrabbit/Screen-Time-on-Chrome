@@ -13,5 +13,59 @@
   },
   "domainNotTrackedTooltip": {
     "message": "当前网站尚未加入统计，您使用该网站的计时将被归入「其他」中"
+  },
+  "addDomainToTrackList": {
+    "message": "加入统计"
+  },
+  "removeDomainFromTrackList": {
+    "message": "取消统计"
+  },
+  "domainNotLimited": {
+    "message": "未限额"
+  },
+  "addDomainToLimitList": {
+    "message": "设置限额"
+  },
+  "removeDomainFromLimitList": {
+    "message": "取消限额"
+  },
+  "addMoreTime": {
+    "message": "延长限额"
+  },
+  "timeUsedShort": {
+    "message": "已使用"
+  },
+  "timeUsed": {
+    "message": "已使用时长"
+  },
+  "timeLeftShort": {
+    "message": "剩余"
+  },
+  "timeLeft": {
+    "message": "剩余时长"
+  },
+  "hourShort": {
+    "message": "时"
+  },
+  "hour": {
+    "message": "小时"
+  },
+  "minuteShort": {
+    "message": "分"
+  },
+  "minute": {
+    "message": "分钟"
+  },
+  "tabOpenedTimes": {
+    "message": "网站打开次数"
+  },
+  "times": {
+    "message": "次"
+  },
+  "overview": {
+    "message": "总览"
+  },
+  "settings": {
+    "message": "设置"
   }
 }
