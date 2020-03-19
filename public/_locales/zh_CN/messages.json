@@ -8,25 +8,28 @@
   "extensionBrowserActionDefaultTitle": {
     "message": "屏幕使用时间"
   },
-  "domainNotTracked": {
+  "mapUrlToUsedDefinedTooltip": {
+    "message": "为当前网站指定新的 URL 以合并您在相同域名下的使用时间"
+  },
+  "urlNotTracked": {
     "message": "未统计"
   },
-  "domainNotTrackedTooltip": {
+  "urlNotTrackedTooltip": {
     "message": "当前网站尚未加入统计，您使用该网站的计时将被归入「其他」中"
   },
-  "addDomainToTrackList": {
+  "addUrlToTrackList": {
     "message": "加入统计"
   },
-  "removeDomainFromTrackList": {
+  "removeUrlFromTrackList": {
     "message": "取消统计"
   },
-  "domainNotLimited": {
+  "urlNotLimited": {
     "message": "未限额"
   },
-  "addDomainToLimitList": {
+  "addUrlToLimitList": {
     "message": "设置限额"
   },
-  "removeDomainFromLimitList": {
+  "removeUrlFromLimitList": {
     "message": "取消限额"
   },
   "addMoreTime": {

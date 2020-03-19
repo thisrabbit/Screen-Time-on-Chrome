@@ -9,14 +9,18 @@ import {
   Dropdown,
   Menu,
 } from 'antd';
-import { SettingOutlined, PieChartOutlined } from '@ant-design/icons';
+import {
+  SettingOutlined,
+  PieChartOutlined,
+  EditOutlined,
+} from '@ant-design/icons';
 import styles from './index.less';
 import { browser } from 'webextension-polyfill-ts';
 import {
-  getDomainState,
+  getUrlState,
   getUrlInfoInActiveTab,
   urlInfo,
-  domainState,
+  urlState,
 } from '@/utils/common';
 import { tooltipWidth } from '@/utils/vars';
 
@@ -51,7 +55,10 @@ const minutes2display: (minutes: number) => JSX.Element = minutes => {
 
 export default () => {
   const [urlInfo, setUrlInfo] = useState();
-  const [domainState, setDomainState] = useState();
+  const [urlState, setUrlState] = useState();
+
+  const [titleEditable, setTitleEditable] = useState(false);
+  const [titleEditing, setTitleEditing] = useState(false);
 
   // @ts-ignore
   useEffect(async () => {
@@ -59,70 +66,97 @@ export default () => {
   }, []);
   // @ts-ignore
   useEffect(async () => {
-    setDomainState(await getDomainState(domainState));
+    setUrlState(await getUrlState(urlState));
   }, []);
 
   return (
     <div className={styles['popup']}>
       {urlInfo ? (
         <>
-          <div className={styles['title']}>
-            <Typography.Text>{urlInfo.displayName}</Typography.Text>
-          </div>
+          <Card
+            className={styles['title']}
+            onMouseEnter={() => setTitleEditable(true)}
+            //onMouseLeave={() => setTitleEditable(false)}
+          >
+            <Card.Grid
+              className={styles['grid']}
+              style={titleEditable ? { width: '80%' } : undefined}
+            >
+              <Typography.Text>{urlInfo.displayName}</Typography.Text>
+              {/*<Tooltip*/}
+              {/*  title={browser.i18n.getMessage('mapUrlToANewOneTooltip')}*/}
+              {/*  placement="bottom"*/}
+              {/*>*/}
+              {/*</Tooltip>*/}
+            </Card.Grid>
+            {titleEditable ? (
+              <Card.Grid className={styles['grid']} style={{ width: '20%' }}>
+                <Button type="link" icon={<EditOutlined />} block />
+              </Card.Grid>
+            ) : (
+              undefined
+            )}
+          </Card>
           <div className={styles['time-ring']}>
             <Progress
               type="dashboard"
               width={tooltipWidth - 32 * 2}
               status="active"
               percent={
-                domainState.tracked
-                  ? domainState.limited
-                    ? ((domainState.maxLimitTime -
-                        domainState.currentlyUsedTime) /
-                        domainState.maxLimitTime) *
+                urlState.tracked
+                  ? urlState.limited
+                    ? ((urlState.maxLimitTime - urlState.currentlyUsedTime) /
+                        urlState.maxLimitTime) *
                       100
-                    : (domainState.currentlyUsedTime / 60) * 100
+                    : (urlState.currentlyUsedTime / 60) * 100
                   : 0
               }
               format={() =>
-                domainState.tracked ? (
-                  domainState.limited ? (
+                urlState.tracked ? (
+                  urlState.limited ? (
                     <>
                       <span className={styles['time-category']}>
                         {browser.i18n.getMessage('timeLeftShort')}
                       </span>
                       {minutes2display(
-                        domainState.maxLimitTime -
-                          domainState.currentlyUsedTime,
+                        urlState.maxLimitTime - urlState.currentlyUsedTime,
                       )}
                     </>
                   ) : (
-                    <span>{browser.i18n.getMessage('domainNotLimited')}</span>
+                    <span>{browser.i18n.getMessage('urlNotLimited')}</span>
                   )
                 ) : (
                   <Tooltip
-                    title={browser.i18n.getMessage('domainNotTrackedTooltip')}
+                    title={browser.i18n.getMessage('urlNotTrackedTooltip')}
                   >
-                    <span>{browser.i18n.getMessage('domainNotTracked')}</span>
+                    <span>{browser.i18n.getMessage('urlNotTracked')}</span>
                   </Tooltip>
                 )
               }
             />
           </div>
           <div className={styles['options']}>
-            {domainState.tracked ? (
-              domainState.limited ? (
+            {urlState.tracked ? (
+              urlState.limited ? (
                 <Dropdown
                   placement="bottomCenter"
                   overlay={
                     <Menu style={{ textAlign: 'center' }}>
-                      <Menu.Item key="1">
-                        <Button danger>
-                          {browser.i18n.getMessage('removeDomainFromLimitList')}
+                      <Menu.Item
+                        key="1"
+                        className={styles['in-dropdown-button']}
+                      >
+                        <Button type="link" block danger>
+                          {browser.i18n.getMessage('removeUrlFromLimitList')}
                         </Button>
                       </Menu.Item>
-                      <Menu.Item key="2">
-                        {browser.i18n.getMessage('removeDomainFromTrackList')}
+                      <Menu.Item
+                        key="2"
+                        className={styles['in-dropdown-button']}
+                      >
+                        <Button type="link" block danger>
+                          {browser.i18n.getMessage('removeUrlFromTrackList')}
+                        </Button>
                       </Menu.Item>
                     </Menu>
                   }
@@ -130,13 +164,29 @@ export default () => {
                   <Button>{browser.i18n.getMessage('addMoreTime')}</Button>
                 </Dropdown>
               ) : (
-                <Button>
-                  {browser.i18n.getMessage('addDomainToLimitList')}
-                </Button>
+                <Dropdown
+                  placement="bottomCenter"
+                  overlay={
+                    <Menu style={{ textAlign: 'center' }}>
+                      <Menu.Item
+                        key="1"
+                        className={styles['in-dropdown-button']}
+                      >
+                        <Button type="link" block danger>
+                          {browser.i18n.getMessage('removeUrlFromTrackList')}
+                        </Button>
+                      </Menu.Item>
+                    </Menu>
+                  }
+                >
+                  <Button>
+                    {browser.i18n.getMessage('addUrlToLimitList')}
+                  </Button>
+                </Dropdown>
               )
             ) : (
               <Button disabled={!urlInfo.concernedProtocol}>
-                {browser.i18n.getMessage('addDomainToTrackList')}
+                {browser.i18n.getMessage('addUrlToTrackList')}
               </Button>
             )}
           </div>
@@ -145,15 +195,15 @@ export default () => {
               <Statistic
                 title={browser.i18n.getMessage('timeUsed')}
                 value={
-                  domainState.tracked
-                    ? domainState.currentlyUsedTime > 59
-                      ? (domainState.currentlyUsedTime / 60).toFixed(1)
-                      : domainState.currentlyUsedTime
+                  urlState.tracked
+                    ? urlState.currentlyUsedTime > 59
+                      ? (urlState.currentlyUsedTime / 60).toFixed(1)
+                      : urlState.currentlyUsedTime
                     : '--'
                 }
                 suffix={
-                  domainState.tracked
-                    ? domainState.currentlyUsedTime > 59
+                  urlState.tracked
+                    ? urlState.currentlyUsedTime > 59
                       ? browser.i18n.getMessage('hour')
                       : browser.i18n.getMessage('minute')
                     : undefined
@@ -163,9 +213,9 @@ export default () => {
             <Card.Grid className={styles['grid']}>
               <Statistic
                 title={browser.i18n.getMessage('tabOpenedTimes')}
-                value={domainState.tracked ? domainState.openedTimes : '--'}
+                value={urlState.tracked ? urlState.openedTimes : '--'}
                 suffix={
-                  domainState.tracked
+                  urlState.tracked
                     ? browser.i18n.getMessage('times')
                     : undefined
                 }
