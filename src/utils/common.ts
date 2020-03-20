@@ -66,7 +66,7 @@ export interface urlState {
 
 export const getUrlState: (urlInfo: urlInfo) => urlState = urlInfo => {
   return {
-    tracked: false,
+    tracked: true,
     limited: false,
     currentlyUsedTime: 40,
     maxLimitTime: 70,

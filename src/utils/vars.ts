@@ -1,2 +1,2 @@
-export const tooltipWidth: number = 250;
-export const tooltipHeight: number = 300;
+export const popupWidth: number = 250;
+export const popupHeight: number = 300;

@@ -11,6 +11,9 @@
   "mapUrlToUsedDefinedTooltip": {
     "message": "为当前网站指定新的 URL 以合并您在相同域名下的使用时间"
   },
+  "userDefinedUrlPlaceholder": {
+    "message": "自定义 URL"
+  },
   "urlNotTracked": {
     "message": "未统计"
   },
@@ -48,13 +51,13 @@
     "message": "剩余时长"
   },
   "hourShort": {
-    "message": "时"
+    "message": "小时"
   },
   "hour": {
     "message": "小时"
   },
   "minuteShort": {
-    "message": "分"
+    "message": "分钟"
   },
   "minute": {
     "message": "分钟"
