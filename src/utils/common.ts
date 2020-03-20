@@ -1,4 +1,4 @@
-import { browser } from 'webextension-polyfill-ts';
+import { browser } from '@/utils/env';
 
 const url2usedDefinedUrl: (host: string) => string = host => {
   return host;

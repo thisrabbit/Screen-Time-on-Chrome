@@ -1,10 +1,10 @@
 import { Input } from 'antd';
 import React, { useState } from 'react';
-import { browser } from 'webextension-polyfill-ts';
+import { browser } from '@/utils/env';
 import styles from './index.less';
 
 export interface TimePickerProps {
-  value: number | undefined;
+  value?: number | undefined;
 }
 
 const TimePicker: React.FC<TimePickerProps> = props => {

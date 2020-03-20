@@ -18,7 +18,7 @@ import {
 } from '@ant-design/icons';
 import { TimePicker } from '@/components/index';
 import styles from './index.less';
-import { browser } from 'webextension-polyfill-ts';
+import { browser } from '@/utils/env';
 import { getUrlInfoInActiveTab, getUrlState } from '@/utils/common';
 import { popupWidth } from '@/utils/vars';
 
