@@ -16,7 +16,7 @@ import {
   SaveOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
-import { TimePicker } from '@/components/index';
+import { TimePicker } from '@/components';
 import styles from './index.less';
 import { browser } from '@/utils/env';
 import { getUrlInfoInActiveTab, getUrlState } from '@/utils/common';
@@ -59,31 +59,36 @@ export default () => {
   const [titleEditing, setTitleEditing] = useState(false);
   const [newTitle, setNewTitle] = useState('urlInfo.displayName');
 
-  // const titleDiv = useRef();
+  const [limitEditing, setLimitEditing] = useState(false);
+  const [limitValue, setLimitValue] = useState();
 
-  // @ts-ignore
-  useEffect(async () => {
-    setUrlInfo(await getUrlInfoInActiveTab());
+  useEffect(() => {
+    (async () => setUrlInfo(await getUrlInfoInActiveTab()))();
   }, []);
-  // @ts-ignore
-  useEffect(async () => {
-    setUrlState(await getUrlState(urlState));
+  useEffect(() => {
+    (async () => {
+      const urlState = await getUrlState(urlInfo);
+      setUrlState(urlState);
+      setLimitValue(urlState.maxLimitTime);
+    })();
   }, []);
 
   let titleEditingDelay: number;
 
   return (
     <div className={styles['popup']}>
-      {urlInfo ? (
+      {urlInfo && urlState ? (
         <>
           <Card
             className={styles['title']}
             onMouseEnter={() => {
+              if (!urlState.tracked) return;
               titleEditingDelay
                 ? clearTimeout(titleEditingDelay)
                 : setTitleEditable(true);
             }}
             onMouseLeave={() => {
+              if (!urlState.tracked) return;
               const resetState = () => {
                 setTitleEditable(false);
                 setTitleEditing(false);
@@ -136,10 +141,12 @@ export default () => {
                     type="link"
                     icon={<EditOutlined />}
                     block
+                    disabled={!urlState.tracked}
                     onClick={() => {
                       setTitleEditing(true);
                       setNewTitle(urlInfo.displayName);
                     }}
+                    // Magic number, will fixed in future using ref
                     style={{ height: '37.5px' }}
                     // style={
                     //   titleDiv.current && findDOMNode(titleDiv.current)
@@ -180,9 +187,10 @@ export default () => {
                         urlState.maxLimitTime - urlState.currentlyUsedTime,
                       )}
                     </>
+                  ) : limitEditing ? (
+                    <TimePicker value={limitValue} />
                   ) : (
-                    //<span>{browser.i18n.getMessage('urlNotLimited')}</span>
-                    <TimePicker />
+                    <span>{browser.i18n.getMessage('urlNotLimited')}</span>
                   )
                 ) : (
                   <Tooltip
@@ -222,6 +230,21 @@ export default () => {
                 >
                   <Button>{browser.i18n.getMessage('addMoreTime')}</Button>
                 </Dropdown>
+              ) : limitEditing ? (
+                <span style={{ position: 'relative', top: '4px' }}>
+                  <Button size="small" onClick={() => setLimitEditing(false)}>
+                    {browser.i18n.getMessage('cancel')}
+                  </Button>
+                  <Button
+                    size="small"
+                    type="primary"
+                    disabled={limitValue < 1 && limitValue > 24 * 60}
+                    style={{ marginLeft: '8px' }}
+                    onClick={() => setLimitEditing(false)}
+                  >
+                    {browser.i18n.getMessage('ok')}
+                  </Button>
+                </span>
               ) : (
                 <Dropdown
                   placement="bottomCenter"
@@ -238,7 +261,7 @@ export default () => {
                     </Menu>
                   }
                 >
-                  <Button>
+                  <Button onClick={() => setLimitEditing(true)}>
                     {browser.i18n.getMessage('addUrlToLimitList')}
                   </Button>
                 </Dropdown>

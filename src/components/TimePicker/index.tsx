@@ -5,6 +5,7 @@ import styles from './index.less';
 
 export interface TimePickerProps {
   value?: number | undefined;
+  onChange?: (value: number | undefined) => void;
 }
 
 const TimePicker: React.FC<TimePickerProps> = props => {
@@ -22,13 +23,14 @@ const TimePicker: React.FC<TimePickerProps> = props => {
           if (/^[0-9]*$/.test(value)) {
             const possibleValue =
               ((timeInMinutes || 0) % 60) + Number(value) * 60;
-            setTimeInMinutes(
+            const newValue =
               possibleValue > 24 * 60
                 ? 24 * 60
                 : possibleValue < 1
                 ? 1
-                : possibleValue,
-            );
+                : possibleValue;
+            setTimeInMinutes(newValue);
+            props.onChange ? props.onChange(newValue) : undefined;
           }
         }}
       />
@@ -55,13 +57,14 @@ const TimePicker: React.FC<TimePickerProps> = props => {
           if (/^[0-9]*$/.test(value)) {
             const possibleValue =
               Math.floor((timeInMinutes || 0) / 60) * 60 + Number(value);
-            setTimeInMinutes(
+            const newValue =
               possibleValue > 24 * 60
                 ? 24 * 60
                 : possibleValue < 1
                 ? 1
-                : possibleValue,
-            );
+                : possibleValue;
+            setTimeInMinutes(newValue);
+            props.onChange ? props.onChange(newValue) : undefined;
           }
         }}
       />

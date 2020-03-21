@@ -1,21 +1,31 @@
-import { browser } from '@/utils/env';
+import { browser, isDev } from '@/utils/env';
 
-const url2usedDefinedUrl: (host: string) => string = host => {
+const url2userDefinedUrl: (host: string) => string = host => {
   return host;
 };
 
-export interface urlInfo {
+export type urlInfo = {
   concernedProtocol: boolean;
   protocol: string;
   host?: string;
   url?: string;
   favIconUrl?: string;
   displayName: string;
-}
+};
 
 const vendors: Array<string> = ['chrome', 'firefox', 'edge'];
 
 export const getUrlInfoInActiveTab: () => Promise<urlInfo> = async () => {
+  if (isDev) {
+    return {
+      concernedProtocol: true,
+      protocol: 'http',
+      host: 'pabbit.club',
+      url: 'pabbit.club',
+      displayName: 'pabbit.club',
+    };
+  }
+
   let tabs = await browser.tabs.query({ active: true, currentWindow: true });
   const originUrl: string = tabs[0].url as string;
   const protocolReg = /^([A-Za-z]+)(?=:\/{2})/.exec(originUrl);
@@ -39,7 +49,7 @@ export const getUrlInfoInActiveTab: () => Promise<urlInfo> = async () => {
         host: host,
         url: url,
         favIconUrl: favIconUrl && favIconUrl !== '' ? favIconUrl : undefined,
-        displayName: url2usedDefinedUrl(url),
+        displayName: url2userDefinedUrl(url),
       };
     case 'file':
       return {
@@ -56,20 +66,20 @@ export const getUrlInfoInActiveTab: () => Promise<urlInfo> = async () => {
   }
 };
 
-export interface urlState {
+export type urlState = {
   tracked: boolean;
   limited: boolean;
   maxLimitTime?: number;
   currentlyUsedTime?: number;
   openedTimes?: number;
-}
+};
 
 export const getUrlState: (urlInfo: urlInfo) => urlState = urlInfo => {
   return {
     tracked: true,
-    limited: false,
+    limited: true,
     currentlyUsedTime: 40,
-    maxLimitTime: 70,
-    openedTimes: 999,
+    maxLimitTime: 40,
+    openedTimes: 0,
   };
 };

@@ -1,5 +1,8 @@
-const getBrowser = () => {
-  if (process.env.NODE_ENV === 'development') {
+export const isDev = process.env.NODE_ENV === 'development';
+
+// ONLY FOR QUICK UI DEVELOPMENT
+export const browser = (() => {
+  if (isDev) {
     const i18n = require('../../public/_locales/zh_CN/messages.json');
 
     return {
@@ -10,8 +13,6 @@ const getBrowser = () => {
       },
     };
   } else {
-    return require('webextension-polyfill-ts');
+    return require('webextension-polyfill-ts').browser;
   }
-};
-
-export const browser = getBrowser();
+})();
