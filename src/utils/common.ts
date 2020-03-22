@@ -78,8 +78,8 @@ export const getUrlState: (urlInfo: urlInfo) => urlState = urlInfo => {
   return {
     tracked: true,
     limited: true,
-    currentlyUsedTime: 40,
-    maxLimitTime: 40,
-    openedTimes: 0,
+    currentlyUsedTime: 1000,
+    maxLimitTime: 45,
+    openedTimes: 12,
   };
 };
