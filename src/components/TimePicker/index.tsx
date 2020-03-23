@@ -26,8 +26,8 @@ const TimePicker: React.FC<TimePickerProps> = props => {
             const newValue =
               possibleValue > 24 * 60
                 ? 24 * 60
-                : possibleValue < 1
-                ? 1
+                : possibleValue < 0
+                ? 0
                 : possibleValue;
             setTimeInMinutes(newValue);
             props.onChange ? props.onChange(newValue) : undefined;
@@ -60,8 +60,8 @@ const TimePicker: React.FC<TimePickerProps> = props => {
             const newValue =
               possibleValue > 24 * 60
                 ? 24 * 60
-                : possibleValue < 1
-                ? 1
+                : possibleValue < 0
+                ? 0
                 : possibleValue;
             setTimeInMinutes(newValue);
             props.onChange ? props.onChange(newValue) : undefined;
