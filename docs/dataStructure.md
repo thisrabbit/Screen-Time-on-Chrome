@@ -9,6 +9,7 @@ let init = {
 ```
 
 ### map
+> * Case Insensitive
 ```js
 let init = {}
 ```
@@ -28,10 +29,19 @@ let caseReclusive = {
 
 ### policy
 ```js
-let init = {}
+let init = {
+  'all': {
+    tracked: false,
+    limited: false,
+  }
+}
 ```
 ```js
 let normal = {
+  'all': {
+    tracked: false,
+    limited: false,
+  },
   'google.com': {
     tracked: true,
     limited: true,
@@ -42,18 +52,26 @@ let normal = {
   }
 }
 ```
+> RESERVED KEYWORD FOR `map` AND `policy`
+> ```js
+> let keyword = ['all', 'date'];
+> ```
 
 ### history
 > Only store up to 5 weeks data. Outdated data will be deleted.
 > Needs long-term keep
 ```js
-let init = Array(35)
+let init = [
+  {
+    date: 'CURRENT',
+  }
+]
 ```
 ```js
 let normal = [
   // A day's record, containing today.
   {
-    date: '2020-03-22',
+    date: '20200322',
     'google.com': {
       screenTime: {
         // hour (from 0)-usedTime (minutes) as key-value
@@ -72,11 +90,13 @@ let normal = [
 ### runtime
 > Refresh every day
 ```js
-let init = {}
+let init = {
+  date: 'CURRENT'
+}
 ```
 ```js
 let normal = {
-  date: '2020-03-22',
+  date: '20200322',
   'google.com': {
     // Used time in second.
     usedSecond: 124,

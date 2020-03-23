@@ -1,11 +1,14 @@
 import { browser } from 'webextension-polyfill-ts';
-import { checkSettings } from '@/pages/background/settings';
+import { checkSettings } from '@/pages/background/utils/settings';
+import { checkMap } from '@/pages/background/utils/map';
+import { checkPolicy } from '@/pages/background/utils/policy';
+import { checkHistory } from '@/pages/background/utils/history';
+import { checkRuntime } from '@/pages/background/utils/runtime';
 
 /**
- * Init variables from browser storage
+ * Init variables from browser's storage
  */
-
-(async () => {
+export default async () => {
   try {
     let {
       settings,
@@ -21,9 +24,20 @@ import { checkSettings } from '@/pages/background/settings';
       'runtime',
     ]);
 
-    settings = checkSettings(settings);
-    map = map || {};
+    settings = await checkSettings(settings);
+    map = await checkMap(map);
+    policy = await checkPolicy(policy);
+    history = await checkHistory(history);
+    runtime = await checkRuntime(runtime);
+
+    return {
+      settings,
+      map,
+      policy,
+      history,
+      runtime,
+    };
   } catch (e) {
-    // Find a good solution for error display
+    console.error("Can not get data from browser's storage.");
   }
-})();
+};

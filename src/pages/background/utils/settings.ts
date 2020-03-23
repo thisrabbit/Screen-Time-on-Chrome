@@ -1,7 +1,7 @@
 import { browser } from 'webextension-polyfill-ts';
 
 export type settings = {
-  version: number;
+  readonly version: number;
   extraTime: number;
 };
 
@@ -21,9 +21,15 @@ const integrityCheck: (obj: object) => boolean = obj => {
   );
 };
 
-export const checkSettings: (settings: any) => settings = settings => {
+export const checkSettings: (
+  settings: any,
+) => Promise<settings> = async settings => {
   if (!settings || typeof settings !== 'object' || !integrityCheck(settings)) {
-    browser;
+    try {
+      await browser.storage.local.set({ settings: defaultSettings });
+    } catch (e) {
+      console.error(e);
+    }
     return defaultSettings;
   } else if (settings.version < getCurrentVersionMainNumber()) {
     // Migrant old version's settings to new version
