@@ -58,8 +58,10 @@ let normal = {
 > ```
 
 ### history
-> Only store up to 5 weeks data. Outdated data will be deleted.
-> Needs long-term keep
+> * Only store up to 5 weeks data. Outdated data will be deleted.
+> * Needs long-term keep
+> * Key is unmapped value
+> * Indexes follow the order of date from past to now
 ```js
 let init = [
   {
@@ -72,7 +74,7 @@ let normal = [
   // A day's record, containing today.
   {
     date: '20200322',
-    'google.com': {
+    'www.google.com': {
       screenTime: {
         // hour (from 0)-usedTime (minutes) as key-value
         '16': 60,

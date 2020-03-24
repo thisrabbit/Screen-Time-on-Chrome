@@ -26,7 +26,7 @@ export const checkRuntime: (
       console.error(e);
     }
     return defaultRuntime;
-  } else if (moment(defaultRuntime.date).diff(runtime.date) > 0) {
+  } else if (moment(defaultRuntime.date).diff(runtime.date, 'days') > 0) {
     // Needs save runtime data to history, and start a new day~
     return runtime;
   } else {
