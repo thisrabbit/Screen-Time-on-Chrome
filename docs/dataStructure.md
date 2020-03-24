@@ -65,6 +65,9 @@ let normal = {
 ```js
 let init = [
   {
+    date: 'DATE WHICH MAKES ARRAY ALIGN TO WEEKS'
+  },
+  {
     date: 'CURRENT',
   }
 ]

@@ -45,6 +45,7 @@ export const modifyMap: (
       vMap[origin] = target;
     } else if (vMap[origin] === target) {
       // UNCHANGED
+      return resultsCode.SUCCESS;
     } else if (origin === target) {
       // DELETE the map of origin, also change history back to origin.
       delete vMap[origin];

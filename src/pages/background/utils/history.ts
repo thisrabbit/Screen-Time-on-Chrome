@@ -17,11 +17,17 @@ export type history = Array<historyUnit>;
 
 let vHistory: history;
 
-const defaultHistory: history = [
-  {
-    date: moment().format('YYYYMMDD'),
-  },
-];
+const defaultHistory: history = (() => {
+  let temp = [];
+  for (let i = moment().day(); i >= 0; i--) {
+    temp[i] = {
+      date: moment()
+        .day(i)
+        .format('YYYYMMDD'),
+    };
+  }
+  return temp;
+})();
 
 export const checkHistory: (
   history: any,
@@ -97,8 +103,16 @@ export const getHistory: () => history = () => {
   return vHistory;
 };
 
-// export const archiveHistory: () => Promise<resultsCode> = () => {
-//   if (moment().diff(vHistory[vHistory.length - 1].date, 'days') > 0) {
-//
-//   }
-// };
+export const archiveHistory: () => Promise<resultsCode> = async () => {
+  if (moment().diff(vHistory[vHistory.length - 1].date, 'days') > 5 * 7) {
+    vHistory = defaultHistory;
+  } else {
+  }
+  try {
+    await browser.storage.local.set({ history: vHistory });
+  } catch (e) {
+    console.error(e);
+    return resultsCode.INTERNAL_ERROR;
+  }
+  return resultsCode.SUCCESS;
+};

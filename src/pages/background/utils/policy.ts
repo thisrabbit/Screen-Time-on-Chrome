@@ -45,6 +45,7 @@ export const modifyPolicy: (
       vPolicy[url] = newPolicy;
     } else if (isEqual(vPolicy[url], newPolicy)) {
       // UNCHANGED
+      return resultsCode.SUCCESS;
     } else if (isEqual(vPolicy['all'], newPolicy)) {
       // DELETE the specific policy, and make it default to save storage space.
       delete vPolicy[url];
