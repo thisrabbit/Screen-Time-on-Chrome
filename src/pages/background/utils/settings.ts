@@ -1,9 +1,12 @@
 import { browser } from 'webextension-polyfill-ts';
+import { resultsCode } from '@/utils/resultsCode';
 
 export type settings = {
   readonly version: number;
   extraTime: number;
 };
+
+let vSettings: settings;
 
 export const defaultSettings: settings = {
   version: 1,
@@ -21,20 +24,28 @@ const integrityCheck: (obj: object) => boolean = obj => {
   );
 };
 
+export enum extendResultOfSettingsCheck {
+  'UPDATED' = 3,
+}
+
 export const checkSettings: (
   settings: any,
-) => Promise<settings> = async settings => {
+) => Promise<resultsCode | extendResultOfSettingsCheck> = async settings => {
   if (!settings || typeof settings !== 'object' || !integrityCheck(settings)) {
     try {
       await browser.storage.local.set({ settings: defaultSettings });
+      vSettings = settings;
     } catch (e) {
       console.error(e);
+      return resultsCode.INTERNAL_ERROR;
     }
-    return defaultSettings;
+    return resultsCode.SUCCESS;
   } else if (settings.version < getCurrentVersionMainNumber()) {
     // Migrant old version's settings to new version
-    return settings;
+    vSettings = settings;
+    return extendResultOfSettingsCheck.UPDATED;
   } else {
-    return settings;
+    vSettings = settings;
+    return resultsCode.SUCCESS;
   }
 };

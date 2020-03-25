@@ -20,16 +20,21 @@ const defaultPolicy: policy = {
   },
 };
 
-export const checkPolicy: (policy: any) => Promise<void> = async policy => {
+export const checkPolicy: (
+  policy: any,
+) => Promise<resultsCode> = async policy => {
   if (!policy || typeof policy !== 'object') {
     try {
       await browser.storage.local.set({ policy: defaultPolicy });
       vPolicy = policy;
     } catch (e) {
       console.error(e);
+      return resultsCode.INTERNAL_ERROR;
     }
+    return resultsCode.SUCCESS;
   } else {
     vPolicy = policy;
+    return resultsCode.SUCCESS;
   }
 };
 

@@ -17,7 +17,8 @@ export type history = Array<historyUnit>;
 
 let vHistory: history;
 
-const defaultHistory: history = (() => {
+// FIXED: If user open browser for a day long, then this default history might be out dated.
+const getDefaultHistory: () => history = () => {
   let temp = [];
   for (let i = moment().day(); i >= 0; i--) {
     temp[i] = {
@@ -27,20 +28,24 @@ const defaultHistory: history = (() => {
     };
   }
   return temp;
-})();
+};
 
 export const checkHistory: (
   history: any,
-) => Promise<history> = async history => {
+) => Promise<resultsCode> = async history => {
   if (!history || !Array.isArray(history)) {
     try {
+      const defaultHistory = getDefaultHistory();
       await browser.storage.local.set({ history: defaultHistory });
+      vHistory = defaultHistory;
     } catch (e) {
       console.error(e);
+      return resultsCode.INTERNAL_ERROR;
     }
-    return defaultHistory;
+    return resultsCode.SUCCESS;
   } else {
-    return history;
+    vHistory = history;
+    return resultsCode.SUCCESS;
   }
 };
 
@@ -111,12 +116,12 @@ export const archiveHistory: () => Promise<resultsCode> = async () => {
     4 * 7
   ) {
     // Saved data was out of date, refresh with new one.
-    vHistory = defaultHistory;
+    vHistory = getDefaultHistory();
   } else {
     // Complete unfilled data, and then cut off the out-dated.
     for (
       let i = moment().diff(vHistory[vHistory.length - 1].date);
-      i >= 0;
+      i > 0;
       i--
     ) {
       vHistory[vHistory.length + i] = {
