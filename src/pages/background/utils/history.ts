@@ -104,9 +104,30 @@ export const getHistory: () => history = () => {
 };
 
 export const archiveHistory: () => Promise<resultsCode> = async () => {
-  if (moment().diff(vHistory[vHistory.length - 1].date, 'days') > 5 * 7) {
+  if (
+    moment(getStartDayOfTheWeek(moment().format('YYYYMMDD')), 'YYYYMMDD').diff(
+      getStartDayOfTheWeek(vHistory[vHistory.length - 1].date),
+    ) >
+    4 * 7
+  ) {
+    // Saved data was out of date, refresh with new one.
     vHistory = defaultHistory;
   } else {
+    // Complete unfilled data, and then cut off the out-dated.
+    for (
+      let i = moment().diff(vHistory[vHistory.length - 1].date);
+      i >= 0;
+      i--
+    ) {
+      vHistory[vHistory.length + i] = {
+        date: moment()
+          .subtract(i, 'day')
+          .format('YYYYMMDD'),
+      };
+    }
+    if (vHistory.length > 5 * 7) {
+      vHistory = vHistory.slice(-5 * 7);
+    }
   }
   try {
     await browser.storage.local.set({ history: vHistory });
@@ -115,4 +136,10 @@ export const archiveHistory: () => Promise<resultsCode> = async () => {
     return resultsCode.INTERNAL_ERROR;
   }
   return resultsCode.SUCCESS;
+};
+
+const getStartDayOfTheWeek: (day: string) => string = day => {
+  return moment(day, 'YYYYMMDD')
+    .subtract(moment(day, 'YYYYMMDD').day())
+    .format('YYYYMMDD');
 };
