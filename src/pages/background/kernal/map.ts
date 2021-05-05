@@ -1,6 +1,5 @@
 import { browser } from 'webextension-polyfill-ts';
 import { resultsCode } from '@/utils/resultsCode';
-import { modifyHistory } from '@/pages/background/utils/history';
 
 export type map = {
   [origin: string]: string;

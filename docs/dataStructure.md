@@ -62,6 +62,7 @@ let normal = {
 > * Needs long-term keep
 > * Key is unmapped value
 > * Indexes follow the order of date from past to now
+> * With lower accuracy
 ```js
 let init = [
   {
@@ -94,6 +95,7 @@ let normal = [
 
 ### runtime
 > Refresh every day
+> * With the highest accuracy
 ```js
 let init = {
   date: 'CURRENT'

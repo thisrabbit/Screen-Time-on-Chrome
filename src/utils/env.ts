@@ -11,6 +11,8 @@ export const browser = (() => {
           return i18n[id] ? i18n[id].message : '--';
         },
       },
+      runtime: {},
+      storage: {},
     };
   } else {
     return require('webextension-polyfill-ts').browser;

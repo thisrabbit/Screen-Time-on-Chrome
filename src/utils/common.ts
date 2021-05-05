@@ -74,12 +74,18 @@ export type urlState = {
   openedTimes?: number;
 };
 
-export const getUrlState: (urlInfo: urlInfo) => urlState = urlInfo => {
-  return {
-    tracked: true,
-    limited: true,
-    currentlyUsedTime: 1000,
-    maxLimitTime: 45,
-    openedTimes: 12,
-  };
+export const getUrlState: (
+  urlInfo: urlInfo,
+) => Promise<urlState> = async urlInfo => {
+  if (isDev) {
+    return {
+      tracked: true,
+      limited: true,
+      currentlyUsedTime: 1000,
+      maxLimitTime: 45,
+      openedTimes: 12,
+    };
+  }
+
+  return await browser.runtime.sendMessage({ key: 'popup/info/urlState' });
 };
