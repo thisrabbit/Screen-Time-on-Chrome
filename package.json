@@ -21,6 +21,7 @@
     ]
   },
   "dependencies": {
+    "@tensorflow/tfjs": "^3.6.0",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.0.8",
     "antd": "^4.0.4",
