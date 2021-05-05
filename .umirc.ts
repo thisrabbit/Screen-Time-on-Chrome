@@ -14,6 +14,11 @@ export default defineConfig({
       .add('@/pages/background/index.ts')
       .end();
 
+    memo
+      .entry('content-scripts')
+      .add('@/pages/content-scripts/index.ts')
+      .end();
+
     // TODO: Remove this if want to deploy
     memo.optimization.minimize(false);
   },
