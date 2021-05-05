@@ -1,9 +1,9 @@
 import { browser } from 'webextension-polyfill-ts';
-import { checkSettings } from '@/pages/background/kernal/settings';
-import { checkMap } from '@/pages/background/kernal/map';
-import { checkPolicy } from '@/pages/background/kernal/policy';
-import { checkHistory } from '@/pages/background/kernal/history';
-import { checkRuntime } from '@/pages/background/kernal/runtime';
+import { checkSettings } from '@/pages/background/kernel/settings';
+import { checkMap } from '@/pages/background/kernel/map';
+import { checkPolicy } from '@/pages/background/kernel/policy';
+import { checkHistory } from '@/pages/background/kernel/history';
+import { checkRuntime } from '@/pages/background/kernel/runtime';
 
 /**
  * Init variables from browser's storage

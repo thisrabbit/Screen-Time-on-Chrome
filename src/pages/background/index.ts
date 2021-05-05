@@ -1,5 +1,5 @@
 import { browser } from 'webextension-polyfill-ts';
-import init from '@/pages/background/kernal/init';
+import init from '@/pages/background/kernel/init';
 
 (async () => {
   await init();
