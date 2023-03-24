@@ -30,7 +30,7 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "umi": "^3.0.8",
-    "webextension-polyfill-ts": "^0.13.0",
+    "webextension-polyfill-ts": "^0.26.0",
     "yorkie": "^2.0.0"
   },
   "devDependencies": {
